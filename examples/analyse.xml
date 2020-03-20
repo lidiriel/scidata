@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<experiment version="1.0">
+	<parameterset nameset="conductivity"
+		title="conductivité Maguy BMPyrroTFSI et TaF5 variable">
+		<param name="B" start="4.68e+3" step="1.00e-1" type="realrange" unit="XYZ" />
+		<param name="C" start="0.18e+3" step="1.00e-1" type="realrange" />
+	</parameterset>
+
+	<parameterset nameset="fit" title="du texte..... blah blah">
+		<param name="unstring" type="string">une chaine de texte</param>
+		<param name="unentier" type="integer">32</param>
+		<param name="ionisation" type="integer" unit="charge">3</param>
+		<param name="flottant1" type="real">3300.89</param>
+		<param name="flottant2" type="real" unit="K">38.56</param>
+		<param name="unboolean" type="logical">True</param>
+		<param name="intervalA" start="4.3" stop="6.7" type="realrange" />
+		<param name="intervalB" start="4.68e+3" step="1.00e-1" type="realrange" />
+		<param name="intervalC" start="4.68e+3" stop="10e+4" step="1.00e-1" type="realrange" />
+		<param name="pasdefit" start="1" stop="30" step="1" type="integerrange" />
+	</parameterset>
+
+	<inputdata structure="columns" name="concentration1" type="float">
+		<inputdatadir>/home/ludovic/data/</inputdatadir>
+		<inputfile>dataTest1.xlsx</inputfile>
+		<column id="HCl" comment="une description HCl(M)" unit="Mol" />
+		<column id="R" comment="une description" unit="" />
+		<column id="Conc1" comment="une description" unit="" />
+		<column id="Conc2" comment="une description" unit="" />
+		<header skipfirstline="1" />
+	</inputdata>
+
+	<inputdata structure="columns" name="concentration2" type="float">
+		<inputdatadir>/home/ludovic/data/</inputdatadir>
+		<inputfile>dataRhIII-HCl.xlsx</inputfile>
+		<skipheader firstlines="1" />
+		<skipcomment startlinesymbol="#" />
+		<!-- columns by left to right order -->
+		<column name="Wavelength" keep="True" comment="une description" unit="nm" /> <!-- column 1 -->
+		<column id="0.5M_HCl" keep="True" comment="une description" unit="" /> <!-- column 2 -->
+		<column id="0.75M_HCl" keep="True" comment="une description 0.75M HCl" unit="" /> <!-- column 3 -->
+		<column skip="True" />
+		<column skip="True" />
+		<column skip="True" />
+		<column skip="True" />
+		<column skip="True" />
+		<column skip="True" />
+		<column skip="True" />
+		<column skip="True" />
+		<column skip="True" />
+		<column skip="True" />
+		<column skip="True" />
+		<column skip="True" />
+	</inputdata>
+
+	<inputdata structure="columns" name="corona-confirmed">
+		<inputdatadir>/home/ludovic/Bureau/COVID-19/csse_covid_19_data/csse_covid_19_time_series/
+		</inputdatadir>
+		<inputfile>time_series_19-covid-Confirmed.csv</inputfile>
+		<skipheader firstline="1" />
+		<column name="Province" type="string" />
+		<column name="Country" type="string" />
+		<column name="Latitude" type="float" />
+		<column name="Longitude" type="float" />
+		<columns name="Date" index="datetimeserie" fromString="ddMMyy" type="integer" />
+	</inputdata>
+
+	<inputdata structure="columns" name="corona-deaths">
+		<inputdatadir>/home/ludovic/Bureau/COVID-19/csse_covid_19_data/csse_covid_19_time_series/
+		</inputdatadir>
+		<inputfile>time_series_19-covid-Deaths.csv</inputfile>
+		<skipheader firstline="1" />
+		<column name="Province" keep="True" type="string" />
+		<column name="Country" keep="True" type="string" />
+		<column name="Lat" keep="True" type="float" />
+		<column name="Long" keep="True" type="float" />
+		<columns index="datetimeserie" format="ddMMyy" type="integer" />
+	</inputdata>
+
+</experiment>
