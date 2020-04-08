@@ -6,34 +6,64 @@
  */
 #include <memory>
 #include <algorithm>
+#include <stdexcept>
+#include <iostream>
+
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 #include <boost/preprocessor/seq/enum.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/log/core.hpp>
 #include <boost/log/trivial.hpp>
-#include "ParameterSet.h"
-#include "Config.h"
+#include <boost/log/expressions.hpp>
 
+#include "Config.h"
+#include "ParameterSet.h"
 #include "Parameter.h"
 
 using namespace std;
-using boost::property_tree::ptree;
-//using namespace boost::log::trivial;
+namespace logging = boost::log;
+namespace pt = boost::property_tree;
 
-Config::Config(string filename) {
+Config::Config(logging::trivial::severity_level loglevel) : m_log_level(loglevel)
+{
+    logging::core::get()->set_filter(
+            logging::trivial::severity >= m_log_level
+    );
+}
+
+Config::Config(void) : Config(logging::trivial::info) {
+}
+
+Config::~Config() {
+}
+
+void Config::read(string filename){
     // Create empty property tree object
-    ptree tree;
+    pt::ptree tree;
     // Parse the XML into the property tree.
-    read_xml(filename, tree);
     BOOST_LOG_TRIVIAL(debug)<<"XML filename : "<<filename;
+    if(!boost::filesystem::exists(filename)){
+        throw logic_error("Invalid filename : "+filename);
+    }
+    try{
+        read_xml(filename, tree);
+    }catch(...){
+        throw logic_error("Error reading file : "+filename);
+    }
     for(auto it: tree.get_child("experiment")){
-    string tree_balise = it.first; //child_tree.first;
+        string tree_balise = it.first; //child_tree.first;
         if (tree_balise.compare("parameterset") == 0){
             string nameset = it.second.get<string>("<xmlattr>.nameset");
             BOOST_LOG_TRIVIAL(debug)<<"XML parameterset nameset : "<<nameset;
-            string title = it.second.get<string>("<xmlattr>.title");
             ParameterSet current(nameset);
-            current.setTitle(title);
+            try{
+                string title = it.second.get<string>("<xmlattr>.title");
+                current.setTitle(title);
+            }catch(exception & e){
+                BOOST_LOG_TRIVIAL(warning)<<"nameset : "<<nameset<<" has no title";
+            }
             // list param
             for(auto it2: it.second){
                 tree_balise = it2.first; //child_tree.first;
@@ -41,18 +71,20 @@ Config::Config(string filename) {
                     string name = it2.second.get<string>("<xmlattr>.name");
                     BOOST_LOG_TRIVIAL(debug)<<"XML param name : "<<name;
                     string type = it2.second.get<string>("<xmlattr>.type");
-
+                    bool typeUnknown = false;
                     if(type == "string"){
-//                        shared_ptr<Param<string>> ptrParam;
-//                        string value =  it2.second.get_value<string>();
-//                        ptrParam = new Param<string>(name,value);
+                        string value =  it2.second.get_value<string>();
+                        current.appendString(name, value);
+                        typeUnknown = true;
                     }
                     if(type == "integer"){
-//                        long value = it2.second.get_value<long>();
-//                        shared_ptr<Param<long>> ptrParam(new Param<long>(name,value));
-//                        //current.appendIntegerParam(*ptrParam);
+                        long value = it2.second.get_value<long>();
+                        current.appendInteger(name, value);
+                        typeUnknown = true;
                     }
-
+                    if(typeUnknown){
+                        //TODO throw error
+                    }
                 }
             }
             m_parameterSetVector.push_back(current);
@@ -60,9 +92,11 @@ Config::Config(string filename) {
     }
 }
 
-Config::~Config() {
-    // TODO Auto-generated destructor stub
+void Config::show(){
+    //TODO
+    cout<<"show config"<<endl;
 }
+
 
 shared_ptr<DataDescription> Config::getInputDataDescription(string dataname){
     shared_ptr<DataDescription> ptr(new DataDescription());

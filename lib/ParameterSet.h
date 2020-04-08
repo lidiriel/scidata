@@ -19,7 +19,10 @@ class ParameterSet {
 public:
     ParameterSet();
     ParameterSet(string name);
+    ParameterSet(const ParameterSet& other);
     virtual ~ParameterSet();
+
+    //ParameterSet& operator=(const ParameterSet& other);
     bool operator==(const ParameterSet& other) const;
 
     void setNameset(string name) { m_nameset = name; }
@@ -28,16 +31,18 @@ public:
     void setTitle(string title) { m_title = title; }
     string getTitle() { return m_title; }
 
-    //string getString(string name);
-    long int getInteger(string name);
+    string getString(string name);
+    long getInteger(string name);
     double getReal(string name);
 
     void appendInteger(string name, long value);
+    void appendString(string name, string value);
 
 private:
     string m_nameset;
     string m_title;
-    vector<std::unique_ptr<ParameterInterface>> m_params;
+    // waring unique_ptr require copy constructor !
+    vector<unique_ptr<ParameterInterface>> m_params;
 
 };
 

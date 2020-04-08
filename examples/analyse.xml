@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <experiment version="1.0">
-	<parameterset nameset="conductivity"
-		title="conductivité Maguy BMPyrroTFSI et TaF5 variable">
-		<param name="B" start="4.68e+3" step="1.00e-1" type="realrange" unit="XYZ" />
-		<param name="C" start="0.18e+3" step="1.00e-1" type="realrange" />
+	<parameterset nameset="notitle"></parameterset>
+	
+	<parameterset nameset="conductivity" title="conductivity title">
 	</parameterset>
 
-	<parameterset nameset="fit" title="du texte..... blah blah">
-		<param name="unstring" type="string">une chaine de texte</param>
-		<param name="unentier" type="integer">32</param>
-		<param name="ionisation" type="integer" unit="charge">3</param>
-		<param name="flottant1" type="real">3300.89</param>
-		<param name="flottant2" type="real" unit="K">38.56</param>
-		<param name="unboolean" type="logical">True</param>
-		<param name="intervalA" start="4.3" stop="6.7" type="realrange" />
-		<param name="intervalB" start="4.68e+3" step="1.00e-1" type="realrange" />
-		<param name="intervalC" start="4.68e+3" stop="10e+4" step="1.00e-1" type="realrange" />
-		<param name="pasdefit" start="1" stop="30" step="1" type="integerrange" />
+	<parameterset nameset="basictype" title="a list of basics types">
+		<param name="astring" type="string">accessing to example texte !</param>
+		<param name="aninteger" type="integer">32</param>
+		<param name="anintegerwithunit" type="integer" unit="charge">3</param>
+		<param name="areal" type="real">3300.89</param>
+		<param name="arealwithunit" type="real" unit="K">38.56</param>
+		<param name="aboolean1" type="logical">True</param>
+		<param name="aboolean2" type="logical">true</param>
+		<param name="aboolean3" type="logical">False</param>
+		<param name="aboolean4" type="logical">false</param>
 	</parameterset>
+
+<!--
+	<parameterset nameset="realinterval">
+		<param name="caseA" type="realrange">[2.3;7.8]</param>
+		<param name="caseB" type="realrange">]2.3;7.8]</param>
+		<param name="caseC" type="realrange">[2.3;7.8[</param>
+		<param name="caseD" type="realrange">]2.3;7.8[</param>
+	</parameterset>
+
+    <parameterset nameset="integerinterval">
+        <param name="caseA" type="integerrange">[2;8]</param>
+        <param name="caseB" type="integerrange">]2;8]</param>
+        <param name="caseC" type="integerrange">[2;8[</param>
+        <param name="caseD" type="integerrange">]2;8[</param>
+    </parameterset>
+-->
 
 	<inputdata structure="columns" name="concentration1" type="float">
 		<inputdatadir>/home/ludovic/data/</inputdatadir>

@@ -7,10 +7,15 @@
 
 #define BOOST_TEST_MODULE Config
 #include <iostream>
-#include "Config.h"
-#include "ParameterSet.h"
+#include <exception>
 #include <boost/test/unit_test.hpp>
 #include <boost/log/trivial.hpp>
+#include <boost/filesystem.hpp>
+
+#include "config/global_build_config.h"
+#include "Config.h"
+#include "ParameterSet.h"
+
 
 using namespace std;
 
@@ -43,22 +48,46 @@ BOOST_AUTO_TEST_SUITE(Suite1)
 
 //BOOST_FIXTURE_TEST_SUITE(ConfigTest, ConfigTestFixture);
 
-BOOST_AUTO_TEST_CASE(ParameterSet1)
+BOOST_AUTO_TEST_CASE(FileNotExist)
 {
-   Config foo("/home/ludovic/workspaceCDT/isabelle/config/analyse.xml");
-   auto paramSet = foo.getParameterSet("conductivity");
-   BOOST_CHECK_EQUAL(paramSet.getNameset(), "conductivity");
-   BOOST_CHECK_EQUAL(paramSet.getTitle(), "conductivité Maguy BMPyrroTFSI et TaF5 variable");
+    try{
+        Config foo;
+        foo.read("invalid.xml");
+    }catch(logic_error & e){
+        BOOST_CHECK_EQUAL(e.what(), "Invalid filename : invalid.xml");
+    }
 }
 
-BOOST_AUTO_TEST_CASE(ParameterSet2)
+BOOST_AUTO_TEST_CASE(ParameterSetNoTitle)
 {
-   Config foo("/home/ludovic/workspaceCDT/isabelle/config/analyse.xml");
-   auto paramSet = foo.getParameterSet("conductivity");
-   BOOST_CHECK_EQUAL(paramSet.getNameset(), "conductivity");
-   //BOOST_CHECK_EQUAL(paramSet.getString("unstring"),"une chaine de texte");
-   //BOOST_CHECK_EQUAL(paramSet.getInteger("unentier"),32);
+    boost::filesystem::path testdatapath(global_testdatapath);
+    testdatapath /= "analyse.xml";
+    Config foo;
+    foo.read(testdatapath.string());
+    auto paramSet = foo.getParameterSet("notitle");
 }
+
+//BOOST_AUTO_TEST_CASE(ParameterSetConductivity)
+//{
+//    boost::filesystem::path testdatapath(global_testdatapath);
+//    testdatapath /= "analyse.xml";
+//    Config foo(testdatapath.string());
+//    auto paramSet = foo.getParameterSet("conductivity");
+//    BOOST_CHECK_EQUAL(paramSet.getNameset(),"conductivity");
+//    BOOST_CHECK_EQUAL(paramSet.getTitle(),"conductivity title");
+//}
+
+//BOOST_AUTO_TEST_CASE(ParameterSetBasicType)
+//{
+//    boost::filesystem::path testdatapath(global_testdatapath);
+//    testdatapath /= "analyse.xml";
+//    Config foo(testdatapath.filename().string());
+//    auto paramSet = foo.getParameterSet("basictype");
+//    BOOST_CHECK_EQUAL(paramSet.getNameset(), "basictype");
+//    BOOST_CHECK_EQUAL(paramSet.getString("astring"),"accessing to example texte !");
+//    //long i = paramSet.getInteger("aninteger");
+//    //BOOST_CHECK_EQUAL(i,32);
+//}
 
 BOOST_AUTO_TEST_SUITE_END()
 
