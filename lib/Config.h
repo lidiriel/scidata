@@ -27,6 +27,7 @@ public:
     Config(void);
     virtual ~Config();
     void read(string filename);
+    void read(string filename, string defaultnameset);
     void show();
     shared_ptr<DataDescription> getInputDataDescription(string dataname);
     ParameterSet getParameterSet(string setname);

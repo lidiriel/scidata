@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(ParameterSetNoTitle)
     boost::filesystem::path testdatapath(global_testdatapath);
     testdatapath /= "analyse.xml";
     Config foo;
-    foo.read(testdatapath.string());
+    foo.read(testdatapath.string(), "notitle");
     auto paramSet = foo.getParameterSet("notitle");
 }
 
@@ -71,10 +71,26 @@ BOOST_AUTO_TEST_CASE(ParameterSetNoTitle)
 //{
 //    boost::filesystem::path testdatapath(global_testdatapath);
 //    testdatapath /= "analyse.xml";
-//    Config foo(testdatapath.string());
+//    Config foo;
+//    foo.read(testdatapath.string(), "conductivity");
 //    auto paramSet = foo.getParameterSet("conductivity");
 //    BOOST_CHECK_EQUAL(paramSet.getNameset(),"conductivity");
 //    BOOST_CHECK_EQUAL(paramSet.getTitle(),"conductivity title");
+//}
+//
+//bool unknowTypeMsg(const std::logic_error& ex)
+//{
+//    BOOST_CHECK_EQUAL(ex.what(), std::string("Unknow type in parameterset unknowtype type = OohAah"));
+//    return true;
+//}
+//
+//BOOST_AUTO_TEST_CASE(ParameterSetUnknowType)
+//{
+//    boost::filesystem::path testdatapath(global_testdatapath);
+//    testdatapath /= "analyse.xml";
+//    Config foo;
+//    foo.read(testdatapath.string(), "unknowtype");
+//    BOOST_CHECK_EXCEPTION(foo.getParameterSet("unknowtype"), std::logic_error, unknowTypeMsg);
 //}
 
 //BOOST_AUTO_TEST_CASE(ParameterSetBasicType)

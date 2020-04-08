@@ -40,6 +40,10 @@ Config::~Config() {
 }
 
 void Config::read(string filename){
+    //TODO
+}
+
+void Config::read(string filename, string defaultnameset){
     // Create empty property tree object
     pt::ptree tree;
     // Parse the XML into the property tree.
@@ -57,37 +61,39 @@ void Config::read(string filename){
         if (tree_balise.compare("parameterset") == 0){
             string nameset = it.second.get<string>("<xmlattr>.nameset");
             BOOST_LOG_TRIVIAL(debug)<<"XML parameterset nameset : "<<nameset;
-            ParameterSet current(nameset);
-            try{
-                string title = it.second.get<string>("<xmlattr>.title");
-                current.setTitle(title);
-            }catch(exception & e){
-                BOOST_LOG_TRIVIAL(warning)<<"nameset : "<<nameset<<" has no title";
-            }
-            // list param
-            for(auto it2: it.second){
-                tree_balise = it2.first; //child_tree.first;
-                if(tree_balise.compare("param") == 0){
-                    string name = it2.second.get<string>("<xmlattr>.name");
-                    BOOST_LOG_TRIVIAL(debug)<<"XML param name : "<<name;
-                    string type = it2.second.get<string>("<xmlattr>.type");
-                    bool typeUnknown = false;
-                    if(type == "string"){
-                        string value =  it2.second.get_value<string>();
-                        current.appendString(name, value);
-                        typeUnknown = true;
-                    }
-                    if(type == "integer"){
-                        long value = it2.second.get_value<long>();
-                        current.appendInteger(name, value);
-                        typeUnknown = true;
-                    }
-                    if(typeUnknown){
-                        //TODO throw error
+            if(defaultnameset.compare(nameset)){
+                ParameterSet current(nameset);
+                try{
+                    string title = it.second.get<string>("<xmlattr>.title");
+                    current.setTitle(title);
+                }catch(exception & e){
+                    BOOST_LOG_TRIVIAL(warning)<<"nameset : "<<nameset<<" has no title";
+                }
+                // list param
+                for(auto it2: it.second){
+                    tree_balise = it2.first; //child_tree.first;
+                    if(tree_balise.compare("param") == 0){
+                        string name = it2.second.get<string>("<xmlattr>.name");
+                        BOOST_LOG_TRIVIAL(debug)<<"XML param name : "<<name;
+                        string type = it2.second.get<string>("<xmlattr>.type");
+                        bool typeUnknown = true;
+                        if(type.compare("string")){
+                            string value =  it2.second.get_value<string>();
+                            current.appendString(name, value);
+                            typeUnknown = false;
+                        }
+                        if(type.compare("integer")){
+                            //long value = it2.second.get_value<long>();
+                            //current.appendInteger(name, value);
+                            typeUnknown = false;
+                        }
+                        if(typeUnknown){
+                            throw logic_error("Unknow type in parameterset "+nameset+" type = "+type);
+                        }
                     }
                 }
+                m_parameterSetVector.push_back(current);
             }
-            m_parameterSetVector.push_back(current);
         }
     }
 }
