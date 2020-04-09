@@ -61,10 +61,11 @@ void Config::read(string filename, string defaultnameset){
         if (tree_balise.compare("parameterset") == 0){
             string nameset = it.second.get<string>("<xmlattr>.nameset");
             BOOST_LOG_TRIVIAL(debug)<<"XML parameterset nameset : "<<nameset;
-            if(defaultnameset.compare(nameset)){
+            if(defaultnameset.compare(nameset) == 0){
                 ParameterSet current(nameset);
                 try{
                     string title = it.second.get<string>("<xmlattr>.title");
+                    BOOST_LOG_TRIVIAL(debug)<<"XML parameterset title : "<<title;
                     current.setTitle(title);
                 }catch(exception & e){
                     BOOST_LOG_TRIVIAL(warning)<<"nameset : "<<nameset<<" has no title";
@@ -77,23 +78,29 @@ void Config::read(string filename, string defaultnameset){
                         BOOST_LOG_TRIVIAL(debug)<<"XML param name : "<<name;
                         string type = it2.second.get<string>("<xmlattr>.type");
                         bool typeUnknown = true;
-                        if(type.compare("string")){
+                        if(type.compare("string") == 0){
                             string value =  it2.second.get_value<string>();
                             current.appendString(name, value);
                             typeUnknown = false;
                         }
-                        if(type.compare("integer")){
+                        if(type.compare("integer") == 0){
                             //long value = it2.second.get_value<long>();
                             //current.appendInteger(name, value);
+                            typeUnknown = false;
+                        }
+                        if(type.compare("real") == 0){
+                            typeUnknown = false;
+                        }
+                        if(type.compare("logical") == 0){
                             typeUnknown = false;
                         }
                         if(typeUnknown){
                             throw logic_error("Unknow type in parameterset "+nameset+" type = "+type);
                         }
                     }
-                }
+                }// end for list param
                 m_parameterSetVector.push_back(current);
-            }
+            } // end if(defaultnameset.comapre
         }
     }
 }
@@ -111,11 +118,12 @@ shared_ptr<DataDescription> Config::getInputDataDescription(string dataname){
 
 ParameterSet Config::getParameterSet(string setname){
     std::vector<ParameterSet>::iterator it;
+    BOOST_LOG_TRIVIAL(debug) << "nb parameterset "<<m_parameterSetVector.size();
     it = find(m_parameterSetVector.begin(), m_parameterSetVector.end(), ParameterSet(setname));
     if (it != m_parameterSetVector.end()){
         return *it;
     }else{
-        BOOST_LOG_TRIVIAL(debug) << "parameterset not found : " << setname;
+        BOOST_LOG_TRIVIAL(info) << "getParameterSet() : not found : " << setname;
     }
     return ParameterSet();
 }

@@ -7,6 +7,7 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <string>
 #include <boost/preprocessor/seq/enum.hpp>
 #include <boost/log/trivial.hpp>
 #include "ParameterSet.h"
@@ -23,6 +24,7 @@ ParameterSet::ParameterSet(string name):
 
 ParameterSet::ParameterSet(const ParameterSet& other){
     m_nameset = other.m_nameset;
+    m_title = other.m_title;
     // begin deep copy code:
     m_params.reserve(m_params.size()); // optional to improve performance
     for(auto& ptr : other.m_params)
@@ -46,15 +48,16 @@ bool ParameterSet::operator==(const ParameterSet& other) const{
 }
 
 void ParameterSet::appendInteger(string name, long value) {
-    //m_params.emplace_back(new Parameter<long>(name, value));
+
 }
 
 void ParameterSet::appendString(string name, string value) {
-
+    unique_ptr<Parameter<string>> ptr(new  Parameter<string>(name, value));
+    m_params.push_back(move(ptr));
 }
 
 string ParameterSet::getString(string name){
-//    std::vector<Param>::iterator it;
+//    std::vector<Parameter>::iterator it;
 //    it = find(m_params.begin(), m_params.end(), Param(name));
 //    if (it != m_params.end()){
 //        return it.get;

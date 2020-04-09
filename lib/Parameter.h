@@ -5,8 +5,8 @@
  *      Author: ludovic
  */
 
-#ifndef LIB_PARAMETER_H_
-#define LIB_PARAMETER_H_
+#ifndef PARAMETER_H_
+#define PARAMETER_H_
 
 #include <string>
 
@@ -19,19 +19,34 @@ public:
 
 };
 
-template <typename AType>
+template <class AType>
 class Parameter : public ParameterInterface {
 public:
-    //Param(string name);
-    Parameter(string name, AType value);
-    ~Parameter(void);
+    Parameter(){
+
+    }
+
+    Parameter(string name, AType value) : m_name(name), m_value(value){
+
+    }
+
+    ~Parameter(void){
+
+    }
+
     bool someFunction() {return false;}
-    //Param & operator=(const Param& other) const;
-    bool operator==(const Parameter& other) const;
+
+    bool operator==(const Parameter& other) const {
+        if(this->m_name.compare(other.m_name) == 0)
+            return true;
+        else
+            return false;
+    }
 
 private:
     string m_name;
     AType m_value;
 };
 
-#endif /* LIB_PARAMETER_H_ */
+
+#endif /* PARAMETER_H_ */

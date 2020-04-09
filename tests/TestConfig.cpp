@@ -18,6 +18,7 @@
 
 
 using namespace std;
+namespace logging = boost::log;
 
 BOOST_AUTO_TEST_SUITE(Suite1)
 
@@ -67,43 +68,43 @@ BOOST_AUTO_TEST_CASE(ParameterSetNoTitle)
     auto paramSet = foo.getParameterSet("notitle");
 }
 
-//BOOST_AUTO_TEST_CASE(ParameterSetConductivity)
-//{
-//    boost::filesystem::path testdatapath(global_testdatapath);
-//    testdatapath /= "analyse.xml";
-//    Config foo;
-//    foo.read(testdatapath.string(), "conductivity");
-//    auto paramSet = foo.getParameterSet("conductivity");
-//    BOOST_CHECK_EQUAL(paramSet.getNameset(),"conductivity");
-//    BOOST_CHECK_EQUAL(paramSet.getTitle(),"conductivity title");
-//}
-//
-//bool unknowTypeMsg(const std::logic_error& ex)
-//{
-//    BOOST_CHECK_EQUAL(ex.what(), std::string("Unknow type in parameterset unknowtype type = OohAah"));
-//    return true;
-//}
-//
-//BOOST_AUTO_TEST_CASE(ParameterSetUnknowType)
-//{
-//    boost::filesystem::path testdatapath(global_testdatapath);
-//    testdatapath /= "analyse.xml";
-//    Config foo;
-//    foo.read(testdatapath.string(), "unknowtype");
-//    BOOST_CHECK_EXCEPTION(foo.getParameterSet("unknowtype"), std::logic_error, unknowTypeMsg);
-//}
+BOOST_AUTO_TEST_CASE(ParameterSetConductivity)
+{
+    boost::filesystem::path testdatapath(global_testdatapath);
+    testdatapath /= "analyse.xml";
+    Config foo;
+    foo.read(testdatapath.string(), "conductivity");
+    auto paramSet = foo.getParameterSet("conductivity");
+    BOOST_CHECK_EQUAL(paramSet.getNameset(),"conductivity");
+    BOOST_CHECK_EQUAL(paramSet.getTitle(),"conductivity title");
+}
 
-//BOOST_AUTO_TEST_CASE(ParameterSetBasicType)
-//{
-//    boost::filesystem::path testdatapath(global_testdatapath);
-//    testdatapath /= "analyse.xml";
-//    Config foo(testdatapath.filename().string());
-//    auto paramSet = foo.getParameterSet("basictype");
-//    BOOST_CHECK_EQUAL(paramSet.getNameset(), "basictype");
-//    BOOST_CHECK_EQUAL(paramSet.getString("astring"),"accessing to example texte !");
-//    //long i = paramSet.getInteger("aninteger");
-//    //BOOST_CHECK_EQUAL(i,32);
-//}
+bool unknowTypeMsg(const std::logic_error& ex)
+{
+    BOOST_CHECK_EQUAL(ex.what(), std::string("Unknow type in parameterset unknowtype type = OohAah"));
+    return true;
+}
+
+BOOST_AUTO_TEST_CASE(ParameterSetUnknowType)
+{
+    boost::filesystem::path testdatapath(global_testdatapath);
+    testdatapath /= "analyse.xml";
+    Config foo;
+    BOOST_CHECK_EXCEPTION(foo.read(testdatapath.string(), "unknowtype"), std::logic_error, unknowTypeMsg);
+}
+
+BOOST_AUTO_TEST_CASE(ParameterSetBasicType)
+{
+    boost::filesystem::path testdatapath(global_testdatapath);
+    testdatapath /= "analyse.xml";
+    Config foo;
+    foo.read(testdatapath.string(), "basictype");
+    auto paramSet = foo.getParameterSet("basictype");
+    BOOST_CHECK_EQUAL(paramSet.getNameset(), "basictype");
+    BOOST_CHECK_EQUAL(paramSet.getString("astring"),"accessing to example texte !");
+    //long i = paramSet.getInteger("aninteger");
+    //BOOST_CHECK_EQUAL(i,32);
+}
 
 BOOST_AUTO_TEST_SUITE_END()
 
