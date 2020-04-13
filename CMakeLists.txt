@@ -10,7 +10,9 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fmessage-length=0")
 ENDIF(CMAKE_COMPILER_IS_GNUCXX)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS "-g -Wall -DBOOST_LOG_DYN_LINK")
 
 # for boost LOG
@@ -24,3 +26,4 @@ include_directories( ${CMAKE_BINARY_DIR} )
 add_subdirectory(lib)
 add_subdirectory(tests)
 add_subdirectory(config)
+add_subdirectory(temp)

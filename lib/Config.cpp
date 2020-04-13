@@ -17,6 +17,7 @@
 #include <boost/log/core.hpp>
 #include <boost/log/trivial.hpp>
 #include <boost/log/expressions.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include "Config.h"
 #include "ParameterSet.h"
@@ -84,14 +85,23 @@ void Config::read(string filename, string defaultnameset){
                             typeUnknown = false;
                         }
                         if(type.compare("integer") == 0){
-                            //long value = it2.second.get_value<long>();
-                            //current.appendInteger(name, value);
+                            long value = it2.second.get_value<long>();
+                            current.appendInteger(name, value);
                             typeUnknown = false;
                         }
                         if(type.compare("real") == 0){
+                            double value = it2.second.get_value<double>();
+                            current.appendReal(name, value);
                             typeUnknown = false;
                         }
                         if(type.compare("logical") == 0){
+                            string value = it2.second.get_value<string>();
+                            boost::to_upper(value);
+                            if(value.compare("TRUE") or value.compare("FALSE")){
+                                current.appendLogical(name, value.compare("TRUE"));
+                            }else{
+                                logic_error("Invalid boolean value "+value);
+                            }
                             typeUnknown = false;
                         }
                         if(typeUnknown){

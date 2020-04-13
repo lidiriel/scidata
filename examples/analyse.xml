@@ -15,6 +15,7 @@
 		<param name="anintegerwithunit" type="integer" unit="charge">3</param>
 		<param name="areal" type="real">3300.89</param>
 		<param name="arealwithunit" type="real" unit="K">38.56</param>
+		<param name="arealscientific" type="real">1.234E8</param>
 		<param name="aboolean1" type="logical">True</param>
 		<param name="aboolean2" type="logical">true</param>
 		<param name="aboolean3" type="logical">False</param>

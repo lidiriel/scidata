@@ -19,7 +19,7 @@ class ParameterSet {
 public:
     ParameterSet();
     ParameterSet(string name);
-    ParameterSet(const ParameterSet& other);
+    //ParameterSet(const ParameterSet& other);
     virtual ~ParameterSet();
 
     //ParameterSet& operator=(const ParameterSet& other);
@@ -31,19 +31,22 @@ public:
     void setTitle(string title) { m_title = title; }
     string getTitle() { return m_title; }
 
+    //void getInterface(string name, shared_ptr<ParameterInterface>  & ptr);
     string getString(string name);
     long getInteger(string name);
     double getReal(string name);
+    template <class RType> RType getValue(string name);
 
+    void appendLogical(string name, bool value);
+    void appendReal(string name, double value);
     void appendInteger(string name, long value);
     void appendString(string name, string value);
 
 private:
     string m_nameset;
     string m_title;
-    // waring unique_ptr require copy constructor !
-    vector<unique_ptr<ParameterInterface>> m_params;
-
+    vector<shared_ptr<ParameterInterface>> m_paramObjects;
+    vector<shared_ptr<ParameterInterface> >::iterator getIterator(const string &name);
 };
 
 #endif /* PARAMETERSET_H_ */

@@ -8,6 +8,7 @@
 #define BOOST_TEST_MODULE Config
 #include <iostream>
 #include <exception>
+#include <limits>
 #include <boost/test/unit_test.hpp>
 #include <boost/log/trivial.hpp>
 #include <boost/filesystem.hpp>
@@ -97,13 +98,15 @@ BOOST_AUTO_TEST_CASE(ParameterSetBasicType)
 {
     boost::filesystem::path testdatapath(global_testdatapath);
     testdatapath /= "analyse.xml";
-    Config foo;
+    Config foo(logging::trivial::debug);
     foo.read(testdatapath.string(), "basictype");
     auto paramSet = foo.getParameterSet("basictype");
     BOOST_CHECK_EQUAL(paramSet.getNameset(), "basictype");
     BOOST_CHECK_EQUAL(paramSet.getString("astring"),"accessing to example texte !");
-    //long i = paramSet.getInteger("aninteger");
-    //BOOST_CHECK_EQUAL(i,32);
+    BOOST_CHECK( paramSet.getInteger("aninteger") == 32);
+    BOOST_CHECK( paramSet.getInteger("anintegerwithunit") == 3);
+    BOOST_CHECK_CLOSE(paramSet.getReal("areal"),3300.89,numeric_limits<double>::epsilon());
+    BOOST_CHECK_CLOSE(paramSet.getReal("arealwithunit"),38.56,numeric_limits<double>::epsilon());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
