@@ -23,33 +23,6 @@ namespace logging = boost::log;
 
 BOOST_AUTO_TEST_SUITE(SuiteBasics)
 
-//struct ConfigTestFixture
-//{
-//    ConfigTestFixture()
-//    : m_configFile("test.tmp")
-//    {
-//        // TODO: Common set-up each test case here.
-//        fclose( fopen(m_configFile.c_str(), "w+") );
-//    }
-//
-//    ~ConfigTestFixture()
-//    {
-//        // TODO: Common tear-down for each test case here.
-//        remove(m_configFile.c_str());
-//    }
-//
-////    // TODO: Possibly put some common tests.
-////    void TestSaveLoad(CMyFoo& foo, bool asBinary)
-////    {
-////        BOOST_CHECK(foo.Save(asBinary));
-////    }
-//
-//    // TODO: Declare some common values accesses in tests here.
-//    string m_configFile;
-//};
-
-//BOOST_FIXTURE_TEST_SUITE(ConfigTest, ConfigTestFixture);
-
 BOOST_AUTO_TEST_CASE(FileNotExist)
 {
     try{

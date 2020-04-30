@@ -57,8 +57,8 @@ BOOST_AUTO_TEST_CASE(InvalidColumnType){
 
 BOOST_AUTO_TEST_CASE(InputData1){
     vector<double> expectedDataCol1 = {0.5 , 0.75, 1, 1.5, 2, 2.5, 3,
-                                   3.5, 4, 4.5, 5, 5.5, 6, 6.5,
-                                   7, 7.5, 8, 8.5, 9, 10, 11, 12};
+            3.5, 4, 4.5, 5, 5.5, 6, 6.5,
+            7, 7.5, 8, 8.5, 9, 10, 11, 12};
     boost::filesystem::path testdatapath(global_testdatapath);
     testdatapath /= "analyse.xml";
     Config foo(logging::trivial::debug);
@@ -78,8 +78,8 @@ BOOST_AUTO_TEST_CASE(InputData1){
 
 BOOST_AUTO_TEST_CASE(InputData2GetColumnByName){
     vector<double> expectedDataCol1 = {0.5 , 0.75, 1, 1.5, 2, 2.5, 3,
-                                   3.5, 4, 4.5, 5, 5.5, 6, 6.5,
-                                   7, 7.5, 8, 8.5, 9, 10, 11, 12};
+            3.5, 4, 4.5, 5, 5.5, 6, 6.5,
+            7, 7.5, 8, 8.5, 9, 10, 11, 12};
     boost::filesystem::path testdatapath(global_testdatapath);
     testdatapath /= "analyse.xml";
     Config foo(logging::trivial::debug);
@@ -95,6 +95,20 @@ BOOST_AUTO_TEST_CASE(InputData2GetColumnByName){
     // check value of 2nd column 3th line
     ColumnOfReal secCol = inputData.column("R");
     BOOST_CHECK_CLOSE(secCol.data[2],416.666666666667,numeric_limits<double>::epsilon());
+}
+
+BOOST_AUTO_TEST_CASE(InputData3CheckColumn){
+    boost::filesystem::path testdatapath(global_testdatapath);
+    testdatapath /= "analyse.xml";
+    Config foo(logging::trivial::debug);
+    foo.load(testdatapath.string(), "concentration2");
+    auto inputData = foo.getInputData("concentration2");
+    inputData.parse();
+    int ncol = inputData.columnsCount();
+    BOOST_CHECK_EQUAL(15, ncol);
+    ColumnOfReal secCol = inputData.column("0.5M_HCl");
+    BOOST_CHECK_EQUAL(secCol.getComment(),"une description");
+    BOOST_CHECK_EQUAL(secCol.getUnit(),"MyUnit");
 }
 
 

@@ -17,11 +17,11 @@ using boost::bad_lexical_cast;
 using namespace std;
 
 
-InputData::InputData() : m_locale("fr_FR.UTF-8"), m_headerLine(0)  {
+InputData::InputData() : m_locale("fr_FR.UTF-8"), m_headerLineNumber(0)  {
 
 }
 
-InputData::InputData(string name) : m_name(name), m_headerLine(0)    {
+InputData::InputData(string name) : m_name(name), m_headerLineNumber(0)    {
 
 }
 
@@ -70,7 +70,7 @@ ColumnOfReal InputData::column(string name){
 }
 
 
-void InputData::createColumn(string name, string type){
+shared_ptr<ColumnInterface> InputData::createColumn(string name, string type){
     shared_ptr<ColumnInterface> ptr(nullptr);
     bool typeUnknown = true;
     if(type.compare("string") == 0){
@@ -88,6 +88,7 @@ void InputData::createColumn(string name, string type){
     if(typeUnknown){
         throw logic_error("Invalid type : "+type+" for column name : "+name);
     }
+    return m_columnObjects.back();
 }
 
 void InputData::parse(){
@@ -101,30 +102,32 @@ void InputData::parse(){
     int nline = 0;
     while(getline(infile, currentLine)){
         nline++;
-        if(nline != m_headerLine){
-            list<string> cells;
-            split(cells, currentLine, boost::is_any_of("\t"));
-            if(cells.size() != m_columnObjects.size()){
-                BOOST_LOG_TRIVIAL(debug) << "cell size "<<cells.size()<< " col number "<<m_columnObjects.size();
-                stringstream ss;
-                ss << "Invalid number of cell in row " << nline;
-                throw logic_error(ss.str());
-            }
-            itColumnObjects it = m_columnObjects.begin();
-            list<string>::iterator itcell = cells.begin();
-            try{
-                while(it != m_columnObjects.end()){
-                    (*it)->append(*itcell);
-                    ++it;
-                    ++itcell;
+        if(nline != m_headerLineNumber){
+            if(currentLine.rfind(m_commentStartWith, 0) != 0) {
+                list<string> cells;
+                split(cells, currentLine, boost::is_any_of("\t"));
+                if(cells.size() != m_columnObjects.size()){
+                    BOOST_LOG_TRIVIAL(debug) << "cell size "<<cells.size()<< " col number "<<m_columnObjects.size();
+                    stringstream ss;
+                    ss << "Invalid number of cell in row " << nline;
+                    throw logic_error(ss.str());
                 }
-            }catch(const bad_lexical_cast & e){
-                stringstream ss;
-                ss << "lexical cast error in row " << nline << " error "<<e.what();
-                throw logic_error(ss.str());
+                itColumnObjects it = m_columnObjects.begin();
+                list<string>::iterator itcell = cells.begin();
+                try{
+                    while(it != m_columnObjects.end()){
+                        (*it)->append(*itcell);
+                        ++it;
+                        ++itcell;
+                    }
+                }catch(const bad_lexical_cast & e){
+                    stringstream ss;
+                    ss << "lexical cast error in row " << nline << " error "<<e.what();
+                    throw logic_error(ss.str());
+                }
             }
         }else{
-            //TODO get save header line
+            split(m_headers, currentLine, boost::is_any_of("\t"));
         }
     }
     infile.close();

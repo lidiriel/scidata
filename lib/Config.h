@@ -1,8 +1,8 @@
 /*
  * Config.h
  *
- *      Author: ludovic leau-mercier
- *     Licence: see LICENSE file in source repository
+ * Author: ludovic leau-mercier
+ * Licence: GPLv3 see LICENSE file in source repository
  */
 
 #ifndef CONFIG_H_
@@ -15,7 +15,6 @@
 #include <boost/log/trivial.hpp>
 #include <boost/log/expressions.hpp>
 
-//#include "DataDescription.h"
 #include "ParameterSet.h"
 #include "InputData.h"
 
@@ -31,7 +30,6 @@ public:
     void read(string filename, string defaultnameset);
     void load(string filename, string defaultinput);
     void show();
-    //shared_ptr<DataDescription> getInputDataDescription(string dataname);
     ParameterSet getParameterSet(string setname);
     InputData getInputData(string name);
 private:

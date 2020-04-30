@@ -1,9 +1,5 @@
 add_library(scidata SHARED
     Config.cpp
-    DataColumn.cpp
-    DataContainer.cpp
-    DataDescription.cpp
-    DataParser.cpp
     ParameterSet.cpp
     InputData.cpp
 )

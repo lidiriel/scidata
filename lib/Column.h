@@ -25,14 +25,17 @@ public:
     virtual void foo() = 0;
     virtual void append(string str) = 0;
 
-    string getName() { return m_name; }
     void setName(string name) { m_name = name; }
-    string getUnit() { return m_unit; }
+    string getName() { return m_name; }
     void setUnit(string unit) { m_unit = unit; }
+    string getUnit() { return m_unit; }
+    void setComment(string comment) { m_comment = comment; }
+    string getComment() { return m_comment; }
 
 private:
     string m_name;
     string m_unit;
+    string m_comment;
 
 };
 

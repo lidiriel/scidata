@@ -83,17 +83,29 @@ void Config::load(string filename, string defaultinput){
                     if(tree_balise.compare("locale") == 0){
                         current.setLocale(it2.second.get_value<string>());
                     }
-                    if(tree_balise.compare("comments") == 0){
-                        //TODO
-                    }
                     if(tree_balise.compare("header") == 0){
-                        current.setHeaderLine(it2.second.get<int>("<xmlattr>.line"));
+                        current.setHeaderLineNumber(it2.second.get<int>("<xmlattr>.line"));
+                    }
+                    if(tree_balise.compare("comments") == 0){
+                        current.setCommentsStartWith(it2.second.get<string>("<xmlattr>.startwith"));
                     }
                     if(tree_balise.compare("column") == 0){
                         string name = it2.second.get<string>("<xmlattr>.name");
                         BOOST_LOG_TRIVIAL(debug)<<"XML column name : "<<name;
                         string type = it2.second.get<string>("<xmlattr>.type");
-                        current.createColumn(name, type);
+                        shared_ptr<ColumnInterface> pColInterface = current.createColumn(name, type);
+                        try {
+                            string comment = it2.second.get<string>("<xmlattr>.comment");
+                            pColInterface->setComment(comment);
+                        }catch(exception & e){
+                            BOOST_LOG_TRIVIAL(warning)<<"column : "<<name<<" has no comment";
+                        }
+                        try {
+                            string unit = it2.second.get<string>("<xmlattr>.unit");
+                            pColInterface->setUnit(unit);
+                        }catch(exception & e){
+                            BOOST_LOG_TRIVIAL(warning)<<"column : "<<name<<" has no unit";
+                        }
                     }
                 }
                 dir /= file;

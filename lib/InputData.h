@@ -29,20 +29,23 @@ public:
 
     void setStructure(string s) { m_structure = s; }
     int columnsCount() { return m_columnObjects.size(); }
-    void createColumn(string name, string type);
+    shared_ptr<ColumnInterface> createColumn(string name, string type);
     void setFile(boost::filesystem::path file){ m_file = file; }
     void parse();
     ColumnOfReal column(int index);
     ColumnOfReal column(string name);
     void setSeparator(string sep){ m_separator = sep; }
     void setLocale(string loc);
-    void setHeaderLine(int line){ m_headerLine = line; }
+    void setHeaderLineNumber(int line){ m_headerLineNumber = line; }
+    void setCommentsStartWith(string comment){ m_commentStartWith = comment; }
 private:
     string m_name;
     string m_structure;
     string m_separator;
     string m_locale;
-    int m_headerLine;
+    string m_commentStartWith;
+    int m_headerLineNumber;
+    vector<string> m_headers;
     boost::filesystem::path m_file;
     vector<shared_ptr<ColumnInterface>> m_columnObjects;
 
