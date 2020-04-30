@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <experiment version="1.0">
 	<parameterset nameset="notitle"></parameterset>
-	
+
 	<parameterset nameset="conductivity" title="conductivity title">
 	</parameterset>
-	
+
 	<parameterset nameset="unknowtype" title="thetitle">
 		<param name="spacetype" type="OohAah">XyZ</param>
 	</parameterset>
-	
+
 	<parameterset nameset="basictype" title="a list of basics types">
 		<param name="astring" type="string">accessing to example texte !</param>
 		<param name="aninteger" type="integer">32</param>
@@ -21,69 +21,77 @@
 		<param name="aboolean3" type="logical">False</param>
 		<param name="aboolean4" type="logical">false</param>
 	</parameterset>
-	
-	<!-- <parameterset nameset="realinterval"> <param name="caseA" type="realrange">[2.3;7.8]</param> <param 
-		name="caseB" type="realrange">]2.3;7.8]</param> <param name="caseC" type="realrange">[2.3;7.8[</param> 
-		<param name="caseD" type="realrange">]2.3;7.8[</param> </parameterset> <parameterset nameset="integerinterval"> 
-		<param name="caseA" type="integerrange">[2;8]</param> <param name="caseB" type="integerrange">]2;8]</param> 
-		<param name="caseC" type="integerrange">[2;8[</param> <param name="caseD" type="integerrange">]2;8[</param> 
-		</parameterset> -->
-	
-	<inputdata structure="columns" name="concentration1" type="float">
-		<inputdatadir>/home/ludovic/data/</inputdatadir>
-		<inputfile>dataTest1.xlsx</inputfile>
-		<column id="HCl" comment="une description HCl(M)" unit="Mol" />
-		<column id="R" comment="une description" unit="" />
-		<column id="Conc1" comment="une description" unit="" />
-		<column id="Conc2" comment="une description" unit="" />
-		<header skipfirstline="1" />
+
+	<inputdata structure="columns" name="InputDataFileNotExist">
+		<inputdatadir>/examples/data/</inputdatadir>
+		<inputfile>invalid_file_for_test.csv</inputfile>
+		<comments startwith="#" />
+		<header line="1" />
+		<column name="HCl" type="real" comment="une description HCl(M)" unit="Mol" />
+		<column name="R" type="real" comment="une description" unit="" />
+		<column name="Conc1" type="real" comment="une description" unit="" />
+		<column name="Conc2" type="real" comment="une description" unit="" />
 	</inputdata>
 
-	<inputdata structure="columns" name="concentration2" type="float">
-		<inputdatadir>/home/ludovic/data/</inputdatadir>
-		<inputfile>dataRhIII-HCl.xlsx</inputfile>
-		<skipheader firstlines="1" />
-		<skipcomment startlinesymbol="#" />
+    <inputdata structure="columns" name="invalidColumnType">
+        <inputdatadir>/home/ludovic/workspaceCDT/scidata/examples/data/</inputdatadir>
+        <inputfile>dataTest1.csv</inputfile>
+        <separator>\t</separator>
+        <comments startwith="#" />
+        <header line="1" />
+        <column name="HCl" type="real" comment="une description HCl(M)" unit="Boo" />
+        <column name="R" type="unknown" comment="une description" unit="Foo" />
+        <column name="Conc1" type="real" comment="une description" unit="Bar" />
+        <column name="Conc2" type="real" comment="une description" unit="Zoo" />
+    </inputdata>
+
+	<inputdata structure="columns" name="concentration1">
+		<inputdatadir>/home/ludovic/workspaceCDT/scidata/examples/data/</inputdatadir>
+		<inputfile>dataTest1.csv</inputfile>
+		<separator>\t</separator>
+		<comments startwith="#" />
+		<header line="1" />
+		<column name="HCl" type="real" comment="une description HCl(M)" unit="Mol" />
+		<column name="R" type="real" comment="une description" unit="" />
+		<column name="Conc1" type="real" comment="une description" unit="" />
+		<column name="Conc2" type="real" comment="une description" unit="" />
+		<column name="Conc3" type="real" comment="une description" unit="" />
+	</inputdata>
+
+	<inputdata structure="columns" name="concentration2">
+		<inputdatadir>/home/ludovic/workspaceCDT/scidata/examples/data/</inputdatadir>
+		<inputfile>dataRhIII-HCl.csv</inputfile>
+		<separator>\t</separator>
+		<header line="1" />
 		<!-- columns by left to right order -->
-		<column name="Wavelength" keep="True" comment="une description" unit="nm" /> <!-- column 1 -->
-		<column id="0.5M_HCl" keep="True" comment="une description" unit="" /> <!-- column 2 -->
-		<column id="0.75M_HCl" keep="True" comment="une description 0.75M HCl" unit="" /> <!-- column 3 -->
-		<column skip="True" />
-		<column skip="True" />
-		<column skip="True" />
-		<column skip="True" />
-		<column skip="True" />
-		<column skip="True" />
-		<column skip="True" />
-		<column skip="True" />
-		<column skip="True" />
-		<column skip="True" />
-		<column skip="True" />
-		<column skip="True" />
+		<!-- index default is name value -->
+		<column name="Wavelength" type="float" comment="une description" unit="nm" /> <!-- column 1 -->
+		<column name="0.5M_HCl" index="header" type="float" comment="une description" unit="" /> <!-- column 2 -->
+		<column name="0.75M_HCl" type="float"  unit="" /> <!-- column 3 -->
+		<column name="0.1M_HCl" type="float"  unit="" /> 
+		<column name="1.5M_HCl" type="float"  unit="" /> 
+		<column name="2M_HCl" type="float"  unit="" /> 
+		<column name="2.5M_HCl" type="float"  unit="" />
+		<column name="3M_HCl" type="float"  unit="" />
+		<column name="3.5M_HCl" type="float"  unit="" />
+		<column name="4M_HCl" type="float"  unit="" />
+		<column name="4.5M_HCl" type="float"  unit="" />
+		<column name="5M_HCl" type="float"  unit="" />
+		<column name="6M_HCl" type="float"  unit="" />
+		<column name="7M_HCl" type="float"  unit="" />
+		<column name="8M_HCl" type="float"  unit="" />
 	</inputdata>
 
-	<inputdata structure="columns" name="corona-confirmed">
-		<inputdatadir>/home/ludovic/Bureau/COVID-19/csse_covid_19_data/csse_covid_19_time_series/
-		</inputdatadir>
-		<inputfile>time_series_19-covid-Confirmed.csv</inputfile>
-		<skipheader firstline="1" />
-		<column name="Province" type="string" />
-		<column name="Country" type="string" />
-		<column name="Latitude" type="float" />
-		<column name="Longitude" type="float" />
-		<columns name="Date" index="datetimeserie" fromString="ddMMyy" type="integer" />
-	</inputdata>
-
-	<inputdata structure="columns" name="corona-deaths">
-		<inputdatadir>/home/ludovic/Bureau/COVID-19/csse_covid_19_data/csse_covid_19_time_series/
-		</inputdatadir>
-		<inputfile>time_series_19-covid-Deaths.csv</inputfile>
-		<skipheader firstline="1" />
-		<column name="Province" keep="True" type="string" />
-		<column name="Country" keep="True" type="string" />
-		<column name="Lat" keep="True" type="float" />
-		<column name="Long" keep="True" type="float" />
-		<columns index="datetimeserie" format="ddMMyy" type="integer" />
+	<inputdata structure="columns" name="absorption_O2">
+		<inputdatadir>/home/ludovic/workspaceCDT/scidata/examples/data/</inputdatadir>
+		<inputfile>SpectrMol_O2.txt</inputfile>
+		<separator>\s</separator>
+		<locale>en_US.UTF-8</locale>
+		<comments startlinesymbol="#" />
+		<header line="5" />
+		<column name="WN" type="real" unit="cm-1" />
+		<column name="XS" type="real" />
+		<column name="Absorbance" type="real" />
 	</inputdata>
 
 </experiment>
