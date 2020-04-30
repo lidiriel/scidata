@@ -35,6 +35,7 @@ public:
     string getString(string name);
     long getInteger(string name);
     double getReal(string name);
+    bool getLogical(string name);
     template <class RType> RType getValue(string name);
 
     void appendLogical(string name, bool value);

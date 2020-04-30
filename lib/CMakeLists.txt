@@ -5,6 +5,7 @@ add_library(scidata SHARED
     DataDescription.cpp
     DataParser.cpp
     ParameterSet.cpp
+    InputData.cpp
 )
 
 #set(CMAKE_CXX_STANDARD 11)

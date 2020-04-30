@@ -22,6 +22,7 @@
 #include "Config.h"
 #include "ParameterSet.h"
 #include "Parameter.h"
+#include "InputData.h"
 
 using namespace std;
 namespace logging = boost::log;
@@ -38,6 +39,70 @@ Config::Config(void) : Config(logging::trivial::info) {
 }
 
 Config::~Config() {
+}
+
+void Config::load(string filename, string defaultinput){
+    // Create empty property tree object
+    pt::ptree tree;
+    // Parse the XML into the property tree.
+    BOOST_LOG_TRIVIAL(debug)<<"XML filename : "<<filename;
+    if(!boost::filesystem::exists(filename)){
+        throw logic_error("Invalid filename : "+filename);
+    }
+    try{
+        read_xml(filename, tree);
+    }catch(...){
+        throw logic_error("Error reading file : "+filename);
+    }
+    for(auto it: tree.get_child("experiment")){
+        string tree_balise = it.first; //child_tree.first;
+        if (tree_balise.compare("inputdata") == 0){
+            boost::filesystem::path  dir, file;
+            string name = it.second.get<string>("<xmlattr>.name");
+            BOOST_LOG_TRIVIAL(debug)<<"XML inputdata name : "<<name;
+            if(defaultinput.compare(name) == 0){
+                InputData current(name);
+                try{
+                    string structure = it.second.get<string>("<xmlattr>.structure");
+                    current.setStructure(structure);
+                }catch(exception & e){
+                    BOOST_LOG_TRIVIAL(warning)<<"name : "<<name<<" has no structure";
+                }
+
+                for(auto it2: it.second){
+                    tree_balise = it2.first; //child_tree.first;
+                    if(tree_balise.compare("inputdatadir") == 0){
+                        dir = boost::filesystem::path(it2.second.get_value<string>());
+                    }
+                    if(tree_balise.compare("inputfile") == 0){
+                        file = boost::filesystem::path(it2.second.get_value<string>());
+                    }
+                    if(tree_balise.compare("separator") == 0){
+                        current.setSeparator(it2.second.get_value<string>());
+                    }
+                    if(tree_balise.compare("locale") == 0){
+                        current.setLocale(it2.second.get_value<string>());
+                    }
+                    if(tree_balise.compare("comments") == 0){
+                        //TODO
+                    }
+                    if(tree_balise.compare("header") == 0){
+                        current.setHeaderLine(it2.second.get<int>("<xmlattr>.line"));
+                    }
+                    if(tree_balise.compare("column") == 0){
+                        string name = it2.second.get<string>("<xmlattr>.name");
+                        BOOST_LOG_TRIVIAL(debug)<<"XML column name : "<<name;
+                        string type = it2.second.get<string>("<xmlattr>.type");
+                        current.createColumn(name, type);
+                    }
+                }
+                dir /= file;
+                current.setFile(dir);
+                m_inputDataVector.push_back(current);
+            }
+        }
+    }
+
 }
 
 void Config::read(string filename){
@@ -98,7 +163,7 @@ void Config::read(string filename, string defaultnameset){
                             string value = it2.second.get_value<string>();
                             boost::to_upper(value);
                             if(value.compare("TRUE") or value.compare("FALSE")){
-                                current.appendLogical(name, value.compare("TRUE"));
+                                current.appendLogical(name, value.compare("TRUE") == 0);
                             }else{
                                 logic_error("Invalid boolean value "+value);
                             }
@@ -121,9 +186,21 @@ void Config::show(){
 }
 
 
-shared_ptr<DataDescription> Config::getInputDataDescription(string dataname){
-    shared_ptr<DataDescription> ptr(new DataDescription());
-    return ptr;
+//shared_ptr<DataDescription> Config::getInputDataDescription(string dataname){
+//    shared_ptr<DataDescription> ptr(new DataDescription());
+//    return ptr;
+//}
+
+InputData Config::getInputData(string name){
+    std::vector<InputData>::iterator it;
+    BOOST_LOG_TRIVIAL(debug) << "nb inputdata "<<m_inputDataVector.size();
+    it = find(m_inputDataVector.begin(), m_inputDataVector.end(), InputData(name));
+    if (it != m_inputDataVector.end()){
+        return *it;
+    }else{
+        BOOST_LOG_TRIVIAL(info) << "getInputData() : not found : " << name;
+    }
+    return InputData();
 }
 
 ParameterSet Config::getParameterSet(string setname){

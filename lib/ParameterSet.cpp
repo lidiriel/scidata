@@ -82,6 +82,10 @@ double ParameterSet::getReal(string name){
     return getValue<double>(name);
 }
 
+bool ParameterSet::getLogical(string name){
+    return getValue<bool>(name);
+}
+
 template <class RType>
 RType ParameterSet::getValue(string name){
     vector<shared_ptr<ParameterInterface> >::iterator it = getIterator(name);
@@ -109,7 +113,7 @@ vector<shared_ptr<ParameterInterface> >::iterator ParameterSet::getIterator(
         }
     }
     if (it == m_paramObjects.end()) {
-        throw logic_error("param name " + name + " not found.");
+        throw logic_error("param " + name + " not found.");
     }
     return it;
 }

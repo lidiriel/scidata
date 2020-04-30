@@ -15,8 +15,9 @@
 #include <boost/log/trivial.hpp>
 #include <boost/log/expressions.hpp>
 
-#include "DataDescription.h"
+//#include "DataDescription.h"
 #include "ParameterSet.h"
+#include "InputData.h"
 
 using namespace std;
 namespace logging = boost::log;
@@ -28,12 +29,15 @@ public:
     virtual ~Config();
     void read(string filename);
     void read(string filename, string defaultnameset);
+    void load(string filename, string defaultinput);
     void show();
-    shared_ptr<DataDescription> getInputDataDescription(string dataname);
+    //shared_ptr<DataDescription> getInputDataDescription(string dataname);
     ParameterSet getParameterSet(string setname);
+    InputData getInputData(string name);
 private:
     logging::trivial::severity_level m_log_level;
     vector<ParameterSet> m_parameterSetVector;
+    vector<InputData> m_inputDataVector;
 };
 
 #endif /* CONFIG_H_ */

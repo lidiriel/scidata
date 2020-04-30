@@ -21,7 +21,7 @@
 using namespace std;
 namespace logging = boost::log;
 
-BOOST_AUTO_TEST_SUITE(Suite1)
+BOOST_AUTO_TEST_SUITE(SuiteBasics)
 
 //struct ConfigTestFixture
 //{
@@ -107,6 +107,11 @@ BOOST_AUTO_TEST_CASE(ParameterSetBasicType)
     BOOST_CHECK( paramSet.getInteger("anintegerwithunit") == 3);
     BOOST_CHECK_CLOSE(paramSet.getReal("areal"),3300.89,numeric_limits<double>::epsilon());
     BOOST_CHECK_CLOSE(paramSet.getReal("arealwithunit"),38.56,numeric_limits<double>::epsilon());
+    BOOST_CHECK_CLOSE(paramSet.getReal("arealscientific"),1.234E8,numeric_limits<double>::epsilon());
+    BOOST_CHECK(paramSet.getLogical("aboolean1"));
+    BOOST_CHECK(paramSet.getLogical("aboolean2"));
+    BOOST_CHECK(!paramSet.getLogical("aboolean3"));
+    BOOST_CHECK(!paramSet.getLogical("aboolean4"));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
