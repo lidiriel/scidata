@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(InputData1){
     BOOST_CHECK_CLOSE(secCol.data[2],416.666666666667,numeric_limits<double>::epsilon());
 }
 
-BOOST_AUTO_TEST_CASE(InputData2){
+BOOST_AUTO_TEST_CASE(InputData2GetColumnByName){
     vector<double> expectedDataCol1 = {0.5 , 0.75, 1, 1.5, 2, 2.5, 3,
                                    3.5, 4, 4.5, 5, 5.5, 6, 6.5,
                                    7, 7.5, 8, 8.5, 9, 10, 11, 12};
