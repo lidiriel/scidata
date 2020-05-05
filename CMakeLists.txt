@@ -20,10 +20,9 @@ set(CMAKE_CXX_FLAGS "-g -Wall -DBOOST_LOG_DYN_LINK")
 #find_package(Threads REQUIRED)
 SET(Boost_USE_MULTITHREADED ON)  
 #SET(Boost_LOG_DYN_LINK
-find_package(Boost COMPONENTS unit_test_framework thread log log_setup REQUIRED)
+find_package(Boost COMPONENTS unit_test_framework thread log log_setup locale REQUIRED)
 include_directories( ${CMAKE_BINARY_DIR} )
 
 add_subdirectory(lib)
 add_subdirectory(tests)
 add_subdirectory(config)
-add_subdirectory(temp)
