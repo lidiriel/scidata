@@ -48,6 +48,7 @@
 	<inputdata structure="columns" name="concentration1">
 		<inputdatadir>/home/ludovic/workspaceCDT/scidata/examples/data/</inputdatadir>
 		<inputfile>dataTest1.csv</inputfile>
+		<locale>fr_FR.UTF-8</locale>
 		<separator>\t</separator>
 		<comments startwith="#" />
 		<header line="1" />
@@ -85,9 +86,11 @@
 	<inputdata structure="columns" name="absorption_O2">
 		<inputdatadir>/home/ludovic/workspaceCDT/scidata/examples/data/</inputdatadir>
 		<inputfile>SpectrMol_O2.txt</inputfile>
+		<!-- separator must be \t or \s or any single character
+		     but we can specify by example: \t\s* == \t OR \s OR * -->
 		<separator>\s</separator>
 		<locale>en_US.UTF-8</locale>
-		<comments startlinesymbol="#" />
+		<comments startwith="#" />
 		<header line="5" />
 		<column name="WN" type="real" unit="cm-1" />
 		<column name="XS" type="real" />

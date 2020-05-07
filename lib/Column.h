@@ -12,9 +12,6 @@
 #include <vector>
 #include <boost/lexical_cast.hpp>
 
-using boost::bad_lexical_cast;
-using boost::lexical_cast;
-
 using namespace std;
 
 class ColumnInterface {
@@ -24,6 +21,7 @@ public:
 
     virtual void foo() = 0;
     virtual void append(string str) = 0;
+    virtual void append(string str, string locale) = 0;
 
     void setName(string name) { m_name = name; }
     string getName() { return m_name; }
@@ -49,7 +47,15 @@ public:
     virtual void foo(){ return; };
 
     void append(string str){
-        data.push_back(lexical_cast<CType>(str));
+        data.push_back(boost::lexical_cast<CType>(str));
+    }
+
+    void append(string str, string locale){
+        std::stringstream ss{ str };
+        ss.imbue( std::locale(locale) );
+        CType result;
+        ss >> result;
+        data.push_back(result);
     }
 
     vector<CType> data;

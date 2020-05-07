@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(InputData1){
 }
 
 BOOST_AUTO_TEST_CASE(InputData2GetColumnByName){
-    vector<double> expectedDataCol1 = {0.5 , 0.75, 1, 1.5, 2, 2.5, 3,
+    vector<double> expectedDataCol1 = {0.5, 0.75, 1, 1.5, 2, 2.5, 3,
             3.5, 4, 4.5, 5, 5.5, 6, 6.5,
             7, 7.5, 8, 8.5, 9, 10, 11, 12};
     boost::filesystem::path testdatapath(global_testdatapath);
@@ -111,6 +111,18 @@ BOOST_AUTO_TEST_CASE(InputData3CheckColumn){
     BOOST_CHECK_EQUAL(secCol.getUnit(),"MyUnit");
 }
 
+BOOST_AUTO_TEST_CASE(InputData4ReadWithLocale){
+    boost::filesystem::path testdatapath(global_testdatapath);
+    testdatapath /= "analyse.xml";
+    Config foo(logging::trivial::debug);
+    foo.load(testdatapath.string(), "absorption_O2");
+    auto inputData = foo.getInputData("absorption_O2");
+    inputData.parse();
+    int ncol = inputData.columnsCount();
+    BOOST_CHECK_EQUAL(3, ncol);
+    ColumnOfReal col = inputData.column("Absorbance");
+    BOOST_CHECK_EQUAL(216450, col.data.size());
+}
 
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -34,7 +34,7 @@ public:
     void parse();
     ColumnOfReal column(int index);
     ColumnOfReal column(string name);
-    void setSeparator(string sep){ m_separator = sep; }
+    void setSeparator(string sep);
     void setLocale(string loc);
     void setHeaderLineNumber(int line){ m_headerLineNumber = line; }
     void setCommentsStartWith(string comment){ m_commentStartWith = comment; }
@@ -50,6 +50,8 @@ private:
     vector<shared_ptr<ColumnInterface>> m_columnObjects;
 
     typedef vector<shared_ptr<ColumnInterface>>::iterator itColumnObjects;
+
+    void changeLocale();
 
 };
 
