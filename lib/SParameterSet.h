@@ -1,29 +1,29 @@
 /*
- * ParameterSet.h
+ * SParameterSet.h
  *
- *  Created on: 10 mars 2020
- *      Author: ludovic
+ * Author: ludovic leau-mercier
+ * Licence: GPLv3 see LICENSE file in source repository
  */
 
-#ifndef PARAMETERSET_H_
-#define PARAMETERSET_H_
+#ifndef SCIDATA_SPARAMETERSET_H_
+#define SCIDATA_SPARAMETERSET_H_
 
 #include <string>
 #include <vector>
 #include <memory>
-#include "Parameter.h"
+#include "SParameter.h"
 
 using namespace std;
 
-class ParameterSet {
+class SParameterSet {
 public:
-    ParameterSet();
-    ParameterSet(string name);
+    SParameterSet();
+    SParameterSet(string name);
     //ParameterSet(const ParameterSet& other);
-    virtual ~ParameterSet();
+    virtual ~SParameterSet();
 
     //ParameterSet& operator=(const ParameterSet& other);
-    bool operator==(const ParameterSet& other) const;
+    bool operator==(const SParameterSet& other) const;
 
     void setNameset(string name) { m_nameset = name; }
     string getNameset(){ return m_nameset; }
@@ -50,4 +50,4 @@ private:
     vector<shared_ptr<ParameterInterface> >::iterator getIterator(const string &name);
 };
 
-#endif /* PARAMETERSET_H_ */
+#endif /* SCIDATA_SPARAMETERSET_H_ */

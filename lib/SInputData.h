@@ -1,31 +1,31 @@
 /*
- * InputData.h
+ * SInputData.h
  *
- *  Created on: 27 avr. 2020
- *      Author: ludovic
+ * Author: ludovic leau-mercier
+ * Licence: GPLv3 see LICENSE file in source repository
  */
 
-#ifndef LIB_INPUTDATA_H_
-#define LIB_INPUTDATA_H_
+#ifndef SCIDATA_SINPUTDATA_H_
+#define SCIDATA_SINPUTDATA_H_
 
 #include <string>
 #include <vector>
 #include <memory>
 #include <boost/filesystem.hpp>
  #include <boost/locale.hpp>
-#include "Column.h"
+#include "SColumn.h"
 
 using namespace std;
 
 
 
-class InputData {
+class SInputData {
 public:
-    InputData();
-    InputData(string name);
-    virtual ~InputData();
+    SInputData();
+    SInputData(string name);
+    virtual ~SInputData();
 
-    bool operator==(const InputData& other) const;
+    bool operator==(const SInputData& other) const;
 
     void setStructure(string s) { m_structure = s; }
     int columnsCount() { return m_columnObjects.size(); }
@@ -55,4 +55,4 @@ private:
 
 };
 
-#endif /* LIB_INPUTDATA_H_ */
+#endif /* SCIDATA_SINPUTDATA_H_ */

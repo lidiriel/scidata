@@ -11,15 +11,15 @@
 #include <algorithm>
 #include <boost/preprocessor/seq/enum.hpp>
 #include <boost/log/trivial.hpp>
-#include "ParameterSet.h"
-#include "Parameter.h"
+#include "SParameterSet.h"
+#include "SParameter.h"
 
 using namespace std;
 
-ParameterSet::ParameterSet() {
+SParameterSet::SParameterSet() {
 }
 
-ParameterSet::ParameterSet(string name):
+SParameterSet::SParameterSet(string name):
                                                             m_nameset(name){
 }
 /*
@@ -34,7 +34,7 @@ ParameterSet::ParameterSet(const ParameterSet& other){
 }
  */
 
-ParameterSet::~ParameterSet() {
+SParameterSet::~SParameterSet() {
 }
 
 //ParameterSet& ParameterSet::operator=(const ParameterSet& other) {
@@ -42,54 +42,54 @@ ParameterSet::~ParameterSet() {
 //    m_nameset = other.m_nameset;
 //}
 
-bool ParameterSet::operator==(const ParameterSet& other) const{
+bool SParameterSet::operator==(const SParameterSet& other) const{
     if(this->m_nameset.compare(other.m_nameset) == 0)
         return true;
     else
         return false;
 }
 
-void ParameterSet::appendLogical(string name, bool value) {
+void SParameterSet::appendLogical(string name, bool value) {
     BOOST_LOG_TRIVIAL(debug)<<"call append integer";
-    m_paramObjects.push_back(make_shared<Parameter<bool>>(name, value));
+    m_paramObjects.push_back(make_shared<SParameter<bool>>(name, value));
 }
 
-void ParameterSet::appendReal(string name, double value) {
+void SParameterSet::appendReal(string name, double value) {
     BOOST_LOG_TRIVIAL(debug)<<"call append integer";
-    m_paramObjects.push_back(make_shared<Parameter<double>>(name, value));
+    m_paramObjects.push_back(make_shared<SParameter<double>>(name, value));
 }
 
-void ParameterSet::appendInteger(string name, long value) {
+void SParameterSet::appendInteger(string name, long value) {
     BOOST_LOG_TRIVIAL(debug)<<"call append integer";
-    m_paramObjects.push_back(make_shared<Parameter<long>>(name, value));
+    m_paramObjects.push_back(make_shared<SParameter<long>>(name, value));
 }
 
-void ParameterSet::appendString(string name, string value) {
+void SParameterSet::appendString(string name, string value) {
     BOOST_LOG_TRIVIAL(debug)<<"call append string";
     shared_ptr<ParameterInterface> ptr(nullptr);
-    m_paramObjects.push_back(make_shared<Parameter<string>>(name, value));
+    m_paramObjects.push_back(make_shared<SParameter<string>>(name, value));
 }
 
-string ParameterSet::getString(string name){
+string SParameterSet::getString(string name){
     return getValue<string>(name);
 }
 
-long ParameterSet::getInteger(string name){
+long SParameterSet::getInteger(string name){
     return getValue<long>(name);
 }
 
-double ParameterSet::getReal(string name){
+double SParameterSet::getReal(string name){
     return getValue<double>(name);
 }
 
-bool ParameterSet::getLogical(string name){
+bool SParameterSet::getLogical(string name){
     return getValue<bool>(name);
 }
 
 template <class RType>
-RType ParameterSet::getValue(string name){
+RType SParameterSet::getValue(string name){
     vector<shared_ptr<ParameterInterface> >::iterator it = getIterator(name);
-    shared_ptr<Parameter<RType>> p = static_pointer_cast<Parameter<RType>>(*it);
+    shared_ptr<SParameter<RType>> p = static_pointer_cast<SParameter<RType>>(*it);
     RType value;
     if(p != nullptr){
         BOOST_LOG_TRIVIAL(debug)<<"value="<<p->getValue();
@@ -101,7 +101,7 @@ RType ParameterSet::getValue(string name){
     return value;
 }
 
-vector<shared_ptr<ParameterInterface> >::iterator ParameterSet::getIterator(
+vector<shared_ptr<ParameterInterface> >::iterator SParameterSet::getIterator(
         const string &name) {
     vector<shared_ptr<ParameterInterface> >::iterator it =
             m_paramObjects.begin();

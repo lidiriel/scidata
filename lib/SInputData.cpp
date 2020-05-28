@@ -1,11 +1,11 @@
 /*
- * InputData.cpp
+ * SInputData.cpp
  *
- *  Created on: 27 avr. 2020
- *      Author: ludovic
+ * Author: ludovic leau-mercier
+ * Licence: GPLv3 see LICENSE file in source repository
  */
 
-#include "InputData.h"
+#include "SInputData.h"
 #include <memory>
 #include <iostream>
 #include <algorithm>
@@ -39,25 +39,25 @@ static inline void trim(std::string &s) {
     rtrim(s);
 }
 
-InputData::InputData() : m_locale(MYLOCALE), m_headerLineNumber(0)  {
+SInputData::SInputData() : m_locale(MYLOCALE), m_headerLineNumber(0)  {
 
 }
 
-InputData::InputData(string name) : m_name(name), m_locale(MYLOCALE),  m_headerLineNumber(0)    {
+SInputData::SInputData(string name) : m_name(name), m_locale(MYLOCALE),  m_headerLineNumber(0)    {
 
 }
 
-InputData::~InputData() {
+SInputData::~SInputData() {
 }
 
-bool InputData::operator==(const InputData& other) const{
+bool SInputData::operator==(const SInputData& other) const{
     if(this->m_name.compare(other.m_name) == 0)
         return true;
     else
         return false;
 }
 
-void InputData::setLocale(string loc){
+void SInputData::setLocale(string loc){
     list<string> locales = { "de_DE", "en_US", "nl_NL", "nl_BE", "fr_FR", "ru_RU" };
     bool lfound = false;
     for(auto l : locales){
@@ -73,18 +73,18 @@ void InputData::setLocale(string loc){
 
 }
 
-void InputData::setSeparator(string sep){
+void SInputData::setSeparator(string sep){
     boost::replace_all(sep,"\\s"," ");
     boost::replace_all(sep,"\\t","\t");
     m_separator = sep;
 }
 
-ColumnOfReal InputData::column(int index){
+ColumnOfReal SInputData::column(int index){
     shared_ptr<ColumnOfReal> column = static_pointer_cast<ColumnOfReal> (m_columnObjects[index]);
     return *column;
 }
 
-ColumnOfReal InputData::column(string name){
+ColumnOfReal SInputData::column(string name){
     itColumnObjects it = m_columnObjects.begin();
     for(; it != m_columnObjects.end(); ++it){
         if(name.compare((*it)->getName()) == 0){
@@ -99,19 +99,19 @@ ColumnOfReal InputData::column(string name){
 }
 
 
-shared_ptr<ColumnInterface> InputData::createColumn(string name, string type){
+shared_ptr<ColumnInterface> SInputData::createColumn(string name, string type){
     shared_ptr<ColumnInterface> ptr(nullptr);
     bool typeUnknown = true;
     if(type.compare("string") == 0){
-        m_columnObjects.push_back(make_shared<Column<string>>(name));
+        m_columnObjects.push_back(make_shared<SColumn<string>>(name));
         typeUnknown = false;
     }
     if(type.compare("real") == 0){
-        m_columnObjects.push_back(make_shared<Column<double>>(name));
+        m_columnObjects.push_back(make_shared<SColumn<double>>(name));
         typeUnknown = false;
     }
     if(type.compare("integer") == 0){
-        m_columnObjects.push_back(make_shared<Column<long>>(name));
+        m_columnObjects.push_back(make_shared<SColumn<long>>(name));
         typeUnknown = false;
     }
     if(typeUnknown){
@@ -120,7 +120,7 @@ shared_ptr<ColumnInterface> InputData::createColumn(string name, string type){
     return m_columnObjects.back();
 }
 
-void InputData::changeLocale(){
+void SInputData::changeLocale(){
     BOOST_LOG_TRIVIAL(debug) << "current locale attribut :"<<m_locale;
     string  spi = "3,14";
     BOOST_LOG_TRIVIAL(debug) << "try to convert " << spi << " with locale "<<m_locale;
@@ -138,7 +138,7 @@ void InputData::changeLocale(){
     }
 }
 
-void InputData::parse(){
+void SInputData::parse(){
     BOOST_LOG_TRIVIAL(debug) << "parse file "<< m_file.string();
     if(!boost::filesystem::exists(m_file)){
         throw logic_error("Data file doesn't exist : "+m_file.string());

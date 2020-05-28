@@ -14,8 +14,8 @@
 #include <boost/filesystem.hpp>
 
 #include "config/global_build_config.h"
-#include "Config.h"
-#include "ParameterSet.h"
+#include "../lib/SConfig.h"
+#include "SParameterSet.h"
 
 
 using namespace std;
@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_SUITE(SuiteBasics)
 BOOST_AUTO_TEST_CASE(FileNotExist)
 {
     try{
-        Config foo;
+        SConfig foo;
         foo.read("invalid.xml");
     }catch(logic_error & e){
         BOOST_CHECK_EQUAL(e.what(), "Invalid filename : invalid.xml");
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(ParameterSetNoTitle)
 {
     boost::filesystem::path testdatapath(global_testdatapath);
     testdatapath /= "analyse.xml";
-    Config foo;
+    SConfig foo;
     foo.read(testdatapath.string(), "notitle");
     auto paramSet = foo.getParameterSet("notitle");
 }
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(ParameterSetConductivity)
 {
     boost::filesystem::path testdatapath(global_testdatapath);
     testdatapath /= "analyse.xml";
-    Config foo;
+    SConfig foo;
     foo.read(testdatapath.string(), "conductivity");
     auto paramSet = foo.getParameterSet("conductivity");
     BOOST_CHECK_EQUAL(paramSet.getNameset(),"conductivity");
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(ParameterSetUnknowType)
 {
     boost::filesystem::path testdatapath(global_testdatapath);
     testdatapath /= "analyse.xml";
-    Config foo;
+    SConfig foo;
     BOOST_CHECK_EXCEPTION(foo.read(testdatapath.string(), "unknowtype"), std::logic_error, unknowTypeMsg);
 }
 
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(ParameterSetBasicType)
 {
     boost::filesystem::path testdatapath(global_testdatapath);
     testdatapath /= "analyse.xml";
-    Config foo(logging::trivial::debug);
+    SConfig foo(logging::trivial::debug);
     foo.read(testdatapath.string(), "basictype");
     auto paramSet = foo.getParameterSet("basictype");
     BOOST_CHECK_EQUAL(paramSet.getNameset(), "basictype");

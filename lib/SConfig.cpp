@@ -4,6 +4,8 @@
  *  Created on: 10 mars 2020
  *      Author: ludovic
  */
+#include "SConfig.h"
+
 #include <memory>
 #include <algorithm>
 #include <stdexcept>
@@ -19,29 +21,28 @@
 #include <boost/log/expressions.hpp>
 #include <boost/algorithm/string.hpp>
 
-#include "Config.h"
-#include "ParameterSet.h"
-#include "Parameter.h"
-#include "InputData.h"
+#include "SParameterSet.h"
+#include "SParameter.h"
+#include "SInputData.h"
 
 using namespace std;
 namespace logging = boost::log;
 namespace pt = boost::property_tree;
 
-Config::Config(logging::trivial::severity_level loglevel) : m_log_level(loglevel)
+SConfig::SConfig(logging::trivial::severity_level loglevel) : m_log_level(loglevel)
 {
     logging::core::get()->set_filter(
             logging::trivial::severity >= m_log_level
     );
 }
 
-Config::Config(void) : Config(logging::trivial::info) {
+SConfig::SConfig(void) : SConfig(logging::trivial::info) {
 }
 
-Config::~Config() {
+SConfig::~SConfig() {
 }
 
-void Config::load(string filename, string defaultinput){
+void SConfig::load(string filename, string defaultinput){
     // Create empty property tree object
     pt::ptree tree;
     // Parse the XML into the property tree.
@@ -61,7 +62,7 @@ void Config::load(string filename, string defaultinput){
             string name = it.second.get<string>("<xmlattr>.name");
             BOOST_LOG_TRIVIAL(debug)<<"XML inputdata name : "<<name;
             if(defaultinput.compare(name) == 0){
-                InputData current(name);
+                SInputData current(name);
                 try{
                     string structure = it.second.get<string>("<xmlattr>.structure");
                     current.setStructure(structure);
@@ -117,11 +118,11 @@ void Config::load(string filename, string defaultinput){
 
 }
 
-void Config::read(string filename){
+void SConfig::read(string filename){
     //TODO
 }
 
-void Config::read(string filename, string defaultnameset){
+void SConfig::read(string filename, string defaultnameset){
     // Create empty property tree object
     pt::ptree tree;
     // Parse the XML into the property tree.
@@ -140,7 +141,7 @@ void Config::read(string filename, string defaultnameset){
             string nameset = it.second.get<string>("<xmlattr>.nameset");
             BOOST_LOG_TRIVIAL(debug)<<"XML parameterset nameset : "<<nameset;
             if(defaultnameset.compare(nameset) == 0){
-                ParameterSet current(nameset);
+                SParameterSet current(nameset);
                 try{
                     string title = it.second.get<string>("<xmlattr>.title");
                     BOOST_LOG_TRIVIAL(debug)<<"XML parameterset title : "<<title;
@@ -192,7 +193,7 @@ void Config::read(string filename, string defaultnameset){
     }
 }
 
-void Config::show(){
+void SConfig::show(){
     //TODO
     cout<<"show config"<<endl;
 }
@@ -203,26 +204,26 @@ void Config::show(){
 //    return ptr;
 //}
 
-InputData Config::getInputData(string name){
-    std::vector<InputData>::iterator it;
+SInputData SConfig::getInputData(string name){
+    std::vector<SInputData>::iterator it;
     BOOST_LOG_TRIVIAL(debug) << "nb inputdata "<<m_inputDataVector.size();
-    it = find(m_inputDataVector.begin(), m_inputDataVector.end(), InputData(name));
+    it = find(m_inputDataVector.begin(), m_inputDataVector.end(), SInputData(name));
     if (it != m_inputDataVector.end()){
         return *it;
     }else{
         BOOST_LOG_TRIVIAL(info) << "getInputData() : not found : " << name;
     }
-    return InputData();
+    return SInputData();
 }
 
-ParameterSet Config::getParameterSet(string setname){
-    std::vector<ParameterSet>::iterator it;
+SParameterSet SConfig::getParameterSet(string setname){
+    std::vector<SParameterSet>::iterator it;
     BOOST_LOG_TRIVIAL(debug) << "nb parameterset "<<m_parameterSetVector.size();
-    it = find(m_parameterSetVector.begin(), m_parameterSetVector.end(), ParameterSet(setname));
+    it = find(m_parameterSetVector.begin(), m_parameterSetVector.end(), SParameterSet(setname));
     if (it != m_parameterSetVector.end()){
         return *it;
     }else{
         BOOST_LOG_TRIVIAL(info) << "getParameterSet() : not found : " << setname;
     }
-    return ParameterSet();
+    return SParameterSet();
 }

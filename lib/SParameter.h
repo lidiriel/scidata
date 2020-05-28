@@ -1,12 +1,12 @@
 /*
- * Param.h
+ * SParameter.h
  *
- *  Created on: 18 mars 2020
- *      Author: ludovic
+ * Author: ludovic leau-mercier
+ * Licence: GPLv3 see LICENSE file in source repository
  */
 
-#ifndef PARAMETER_H_
-#define PARAMETER_H_
+#ifndef SCIDATA_SPARAMETER_H_
+#define SCIDATA_SPARAMETER_H_
 
 #include <string>
 
@@ -39,13 +39,13 @@ private:
 };
 
 template <class AType>
-class Parameter : public ParameterInterface {
+class SParameter : public ParameterInterface {
 public:
 /*
     Parameter(string name) : ParameterInterface(name) {
     }
 */
-    Parameter(string name, AType value) : ParameterInterface(name), m_value(value){
+    SParameter(string name, AType value) : ParameterInterface(name), m_value(value){
     }
 
   //  ~Parameter(void){
@@ -66,7 +66,7 @@ private:
     AType m_value;
 };
 
-template class Parameter<string>;
-template class Parameter<long>;
+template class SParameter<string>;
+template class SParameter<long>;
 
-#endif /* PARAMETER_H_ */
+#endif /* SCIDATA_SPARAMETER_H_ */

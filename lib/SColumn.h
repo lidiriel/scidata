@@ -1,12 +1,12 @@
 /*
- * Column.h
+ * SColumn.h
  *
- *  Created on: 27 avr. 2020
- *      Author: ludovic
+ * Author: ludovic leau-mercier
+ * Licence: GPLv3 see LICENSE file in source repository
  */
 
-#ifndef LIB_COLUMN_H_
-#define LIB_COLUMN_H_
+#ifndef SCIDATA_COLUMN_H_
+#define SCIDATA_COLUMN_H_
 
 #include <string>
 #include <vector>
@@ -38,9 +38,9 @@ private:
 };
 
 template <class CType>
-class Column : public ColumnInterface {
+class SColumn : public ColumnInterface {
 public:
-    Column(string name) : ColumnInterface(name){
+    SColumn(string name) : ColumnInterface(name){
 
     }
 
@@ -62,10 +62,10 @@ public:
 
 };
 
-template class Column<string>;
-template class Column<double>;
-template class Column<long>;
+template class SColumn<string>;
+template class SColumn<double>;
+template class SColumn<long>;
 
-typedef Column<double> ColumnOfReal;
+typedef SColumn<double> ColumnOfReal;
 
-#endif /* LIB_COLUMN_H_ */
+#endif /* SCIDATA_COLUMN_H_ */

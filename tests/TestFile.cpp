@@ -1,3 +1,4 @@
+
 #define BOOST_TEST_MODULE Config
 #include <iostream>
 #include <exception>
@@ -7,9 +8,9 @@
 #include <boost/filesystem.hpp>
 
 #include "config/global_build_config.h"
-#include "Config.h"
-#include "ParameterSet.h"
-#include "InputData.h"
+#include "../lib/SConfig.h"
+#include "SParameterSet.h"
+#include "SInputData.h"
 
 using namespace std;
 namespace logging = boost::log;
@@ -19,7 +20,7 @@ BOOST_AUTO_TEST_SUITE(SuiteFile)
 BOOST_AUTO_TEST_CASE(FileNotExist)
 {
     try{
-        Config foo;
+        SConfig foo;
         foo.read("invalid.xml");
     }catch(logic_error & e){
         BOOST_CHECK_EQUAL(e.what(), "Invalid filename : invalid.xml");
@@ -42,7 +43,7 @@ BOOST_AUTO_TEST_CASE(InputDataFileNotExist)
 {
     boost::filesystem::path testdatapath(global_testdatapath);
     testdatapath /= "analyse.xml";
-    Config foo(logging::trivial::debug);
+    SConfig foo(logging::trivial::debug);
     foo.load(testdatapath.string(), "InputDataFileNotExist");
     auto inputData = foo.getInputData("InputDataFileNotExist");
     BOOST_CHECK_EXCEPTION(inputData.parse(), std::logic_error, dataFileNotExistMsg);
@@ -51,7 +52,7 @@ BOOST_AUTO_TEST_CASE(InputDataFileNotExist)
 BOOST_AUTO_TEST_CASE(InvalidColumnType){
     boost::filesystem::path testdatapath(global_testdatapath);
     testdatapath /= "analyse.xml";
-    Config foo(logging::trivial::debug);
+    SConfig foo(logging::trivial::debug);
     BOOST_CHECK_EXCEPTION(foo.load(testdatapath.string(), "invalidColumnType"), std::logic_error, invalidColumnType);
 }
 
@@ -61,7 +62,7 @@ BOOST_AUTO_TEST_CASE(InputData1){
             7, 7.5, 8, 8.5, 9, 10, 11, 12};
     boost::filesystem::path testdatapath(global_testdatapath);
     testdatapath /= "analyse.xml";
-    Config foo(logging::trivial::debug);
+    SConfig foo(logging::trivial::debug);
     foo.load(testdatapath.string(), "concentration1");
     auto inputData = foo.getInputData("concentration1");
     inputData.parse();
@@ -82,7 +83,7 @@ BOOST_AUTO_TEST_CASE(InputData2GetColumnByName){
             7, 7.5, 8, 8.5, 9, 10, 11, 12};
     boost::filesystem::path testdatapath(global_testdatapath);
     testdatapath /= "analyse.xml";
-    Config foo(logging::trivial::debug);
+    SConfig foo(logging::trivial::debug);
     foo.load(testdatapath.string(), "concentration1");
     auto inputData = foo.getInputData("concentration1");
     inputData.parse();
@@ -100,7 +101,7 @@ BOOST_AUTO_TEST_CASE(InputData2GetColumnByName){
 BOOST_AUTO_TEST_CASE(InputData3CheckColumn){
     boost::filesystem::path testdatapath(global_testdatapath);
     testdatapath /= "analyse.xml";
-    Config foo(logging::trivial::debug);
+    SConfig foo(logging::trivial::debug);
     foo.load(testdatapath.string(), "concentration2");
     auto inputData = foo.getInputData("concentration2");
     inputData.parse();
@@ -114,7 +115,7 @@ BOOST_AUTO_TEST_CASE(InputData3CheckColumn){
 BOOST_AUTO_TEST_CASE(InputData4ReadWithLocale){
     boost::filesystem::path testdatapath(global_testdatapath);
     testdatapath /= "analyse.xml";
-    Config foo(logging::trivial::debug);
+    SConfig foo(logging::trivial::debug);
     foo.load(testdatapath.string(), "absorption_O2");
     auto inputData = foo.getInputData("absorption_O2");
     inputData.parse();

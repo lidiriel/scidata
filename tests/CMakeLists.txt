@@ -17,7 +17,7 @@ LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib)
 #message(${Boost_LIBRARIES})
 
 target_link_libraries(testConfig
-                      scidata
+                      SciData
                       ${Boost_LIBRARIES}
                       )
                       
@@ -27,7 +27,7 @@ LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib)
 #message(${Boost_LIBRARIES})
 
 target_link_libraries(testFile
-                      scidata
+                      SciData
                       ${Boost_LIBRARIES}
                       )
 
