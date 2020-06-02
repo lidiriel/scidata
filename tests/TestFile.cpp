@@ -69,12 +69,12 @@ BOOST_AUTO_TEST_CASE(InputData1){
     int ncol = inputData.columnsCount();
     BOOST_CHECK_EQUAL(5, ncol);
     ColumnOfReal firstCol = inputData.column(0);
-    BOOST_CHECK_EQUAL(expectedDataCol1.size(), firstCol.data.size());
-    BOOST_CHECK_EQUAL_COLLECTIONS(firstCol.data.begin(), firstCol.data.end(),
+    BOOST_CHECK_EQUAL(expectedDataCol1.size(), firstCol._data.size());
+    BOOST_CHECK_EQUAL_COLLECTIONS(firstCol._data.begin(), firstCol._data.end(),
             expectedDataCol1.begin(), expectedDataCol1.end());
     // check value of 2nd column 3th line
     ColumnOfReal secCol = inputData.column(1);
-    BOOST_CHECK_CLOSE(secCol.data[2],416.666666666667,numeric_limits<double>::epsilon());
+    BOOST_CHECK_CLOSE(secCol._data[2],416.666666666667,numeric_limits<double>::epsilon());
 }
 
 BOOST_AUTO_TEST_CASE(InputData2GetColumnByName){
@@ -90,12 +90,12 @@ BOOST_AUTO_TEST_CASE(InputData2GetColumnByName){
     int ncol = inputData.columnsCount();
     BOOST_CHECK_EQUAL(5, ncol);
     ColumnOfReal firstCol = inputData.column("HCl");
-    BOOST_CHECK_EQUAL(expectedDataCol1.size(), firstCol.data.size());
-    BOOST_CHECK_EQUAL_COLLECTIONS(firstCol.data.begin(), firstCol.data.end(),
+    BOOST_CHECK_EQUAL(expectedDataCol1.size(), firstCol._data.size());
+    BOOST_CHECK_EQUAL_COLLECTIONS(firstCol._data.begin(), firstCol._data.end(),
             expectedDataCol1.begin(), expectedDataCol1.end());
     // check value of 2nd column 3th line
     ColumnOfReal secCol = inputData.column("R");
-    BOOST_CHECK_CLOSE(secCol.data[2],416.666666666667,numeric_limits<double>::epsilon());
+    BOOST_CHECK_CLOSE(secCol._data[2],416.666666666667,numeric_limits<double>::epsilon());
 }
 
 BOOST_AUTO_TEST_CASE(InputData3CheckColumn){
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(InputData4ReadWithLocale){
     int ncol = inputData.columnsCount();
     BOOST_CHECK_EQUAL(3, ncol);
     ColumnOfReal col = inputData.column("Absorbance");
-    BOOST_CHECK_EQUAL(216450, col.data.size());
+    BOOST_CHECK_EQUAL(216450, col._data.size());
 }
 
 

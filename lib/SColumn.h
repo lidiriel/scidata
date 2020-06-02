@@ -47,7 +47,7 @@ public:
     virtual void foo(){ return; };
 
     void append(string str){
-        data.push_back(boost::lexical_cast<CType>(str));
+        _data.push_back(boost::lexical_cast<CType>(str));
     }
 
     void append(string str, string locale){
@@ -55,10 +55,18 @@ public:
         ss.imbue( std::locale(locale) );
         CType result;
         ss >> result;
-        data.push_back(result);
+        _data.push_back(result);
     }
 
-    vector<CType> data;
+    CType* data(){
+        return _data.data();
+    }
+
+    int size(){
+        return _data.size();
+    }
+
+    vector<CType> _data;
 
 };
 
